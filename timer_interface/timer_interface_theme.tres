@@ -1,3 +1,10 @@
 [gd_resource type="Theme" format=3 uid="uid://bvecnc26kw5cj"]
 
 [resource]
+BoxContainer/constants/separation = 20
+Button/font_sizes/font_size = 40
+HeaderLarge/font_sizes/font_size = 50
+Label/font_sizes/font_size = 36
+LineEdit/constants/minimum_character_width = 2
+LineEdit/font_sizes/font_size = 120
+TimeDisplay/font_sizes/font_size = 140
