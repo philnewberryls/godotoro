@@ -32,7 +32,7 @@ one_shot = true
 stream = ExtResource("5_gc1de")
 script = SubResource("GDScript_78x87")
 
-[node name="GUI" type="CenterContainer" parent="." node_paths=PackedStringArray("timer_stopped_buttons", "timer_in_progress_buttons", "timer_setup_fields", "timer_setup_minutes", "timer_setup_seconds", "timer_display")]
+[node name="GUI" type="CenterContainer" parent="." node_paths=PackedStringArray("timer_interface", "timer_stopped_buttons", "timer_in_progress_buttons", "timer_setup_fields", "timer_setup_minutes", "timer_setup_seconds", "timer_display")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -45,6 +45,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_kawb5")
 script = ExtResource("2_kbg0o")
+timer_interface = NodePath("..")
 timer_stopped_buttons = NodePath("VBoxContainer/ReadyButtons")
 timer_in_progress_buttons = NodePath("VBoxContainer/InProgressButtons")
 timer_setup_fields = NodePath("VBoxContainer/TimerSetupFields")

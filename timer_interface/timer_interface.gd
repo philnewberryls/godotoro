@@ -1,9 +1,17 @@
 extends Node
+class_name TimerInterface
+
+enum mode_states{
+	WORK,
+	SHORT_BREAK,
+	LONG_BREAK
+}
 
 @export var gui: TimerInterfaceGUI
 @export var active_timer: Timer
 @export var audio_player: AudioStreamPlayer
 
+var current_mode: mode_states = mode_states.WORK
 
 func _ready(): 
 	gui.new_timer_start_requested.connect(_start_timer)
