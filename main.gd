@@ -9,9 +9,11 @@ extends Node
 
 
 func _ready(): 
+	timer_interface.default_time_to_display_in_seconds = default_start_time_in_seconds
 	timer_interface.start_button_pressed.connect(_start_timer)
 	timer_interface.timer_pause_requested.connect(_pause_timer)
 	timer_interface.timer_resume_requested.connect(_resume_timer)
+	timer_interface.timer_reset_requested.connect(_reset_timer)
 
 func _process(_delta):
 	if not active_timer.is_stopped():
@@ -33,3 +35,6 @@ func _pause_timer():
 
 func _resume_timer():
 	active_timer.paused = false
+
+func _reset_timer():
+	active_timer.stop()
