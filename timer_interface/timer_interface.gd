@@ -18,7 +18,7 @@ signal timer_reset_requested()
 @export var timer_setup_seconds: SpinBox
 @export var timer_display: Label
 
-var default_time_to_display_in_seconds: int = 60 * 25 # Overriden from main
+var default_time_to_display_in_seconds: int = 60 * 25
 
 func _on_start_button_button_up():
 	new_timer_start_requested.emit(timer_setup_minutes.value, timer_setup_seconds.value)
@@ -36,7 +36,13 @@ func _on_pause_resume_button_timer_resume_requested():
 func _on_reset_timer_button_button_up():
 	timer_reset_requested.emit()
 	_switch_displayed_buttons(button_display_states.TIMER_READY)
-	update_timer_display(default_time_to_display_in_seconds)
+	update_setup_fields(default_time_to_display_in_seconds)
+
+
+func update_setup_fields(time_total_in_seconds: float):
+	var time_total: int = floor(time_total_in_seconds)
+	timer_setup_minutes.value = time_total / 60
+	timer_setup_seconds.value = time_total - (timer_setup_minutes.value * 60)
 
 
 func update_timer_display(time_left: float):

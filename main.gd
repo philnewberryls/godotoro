@@ -14,6 +14,7 @@ func _ready():
 	timer_interface.timer_pause_requested.connect(_pause_timer)
 	timer_interface.timer_resume_requested.connect(_resume_timer)
 	timer_interface.timer_reset_requested.connect(_reset_timer)
+	timer_interface.update_setup_fields(default_start_time_in_seconds)
 
 func _process(_delta):
 	if not active_timer.is_stopped():
