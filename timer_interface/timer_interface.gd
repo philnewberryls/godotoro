@@ -7,10 +7,17 @@ enum button_display_states{
 	TIMER_IN_PROGRESS
 }
 
+enum mode_states{
+	WORK,
+	SHORT_BREAK,
+	LONG_BREAK
+}
+
 signal new_timer_start_requested()
 signal timer_pause_requested()
 signal timer_resume_requested()
 signal timer_reset_requested()
+signal mode_change_requested()
 
 @export var timer_stopped_buttons: HBoxContainer
 @export var timer_in_progress_buttons: HBoxContainer
@@ -19,8 +26,14 @@ signal timer_reset_requested()
 @export var timer_setup_seconds: SpinBox
 @export var timer_display: Label
 
-var default_time_to_display_in_seconds: int = 60 * 25
+var default_work_time_seconds: int = 60 * 25
+var default_short_break_time_seconds: int = 60 * 5
+var default_long_break_seconds: int = 60 * 15
+var current_mode: mode_states = mode_states.WORK
 
+func _ready():
+	for mode_button in get_tree().get_nodes_in_group("mode_buttons"):
+		mode_button.mode_change_requested.connect(_on_mode_button_mode_change_requested)
 
 func _on_start_button_button_up():
 	new_timer_start_requested.emit(timer_setup_minutes.value, timer_setup_seconds.value)
@@ -38,7 +51,41 @@ func _on_pause_resume_button_timer_resume_requested():
 func _on_reset_timer_button_button_up():
 	timer_reset_requested.emit()
 	_switch_displayed_buttons(button_display_states.TIMER_READY)
-	update_setup_fields(default_time_to_display_in_seconds)
+	reset_setup_fields()
+
+func reset_setup_fields():
+	match current_mode:
+		mode_states.WORK:
+			update_setup_fields(default_work_time_seconds)
+		mode_states.SHORT_BREAK:
+			update_setup_fields(default_short_break_time_seconds)
+		mode_states.LONG_BREAK:
+			update_setup_fields(default_long_break_seconds)
+
+
+func _on_work_mode_button_button_up():
+	pass
+
+
+func _on_break_mode_button_button_up():
+	pass # Replace with function body.
+
+
+func _on_long_break_mode_button_button_up():
+	pass # Replace with function body.
+
+
+func _on_mode_button_mode_change_requested(mode_name: String):
+	mode_change_requested.emit(mode_name)
+	if mode_name.to_lower().contains("work"):
+		current_mode = mode_states.WORK
+	elif mode_name.to_lower().contains("short"):
+		current_mode = mode_states.SHORT_BREAK
+	elif mode_name.to_lower().contains("long"):
+		current_mode = mode_states.LONG_BREAK
+	else:
+		printerr("Invalid mode name given!")
+	reset_setup_fields()
 
 
 func update_setup_fields(time_total_in_seconds: float):
@@ -80,4 +127,3 @@ func _switch_displayed_buttons(state_to_switch_to: button_display_states):
 			timer_display.show()
 		_:
 			printerr("Invalid state switch request given!")
-

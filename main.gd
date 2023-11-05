@@ -4,17 +4,13 @@ extends Node
 @export var active_timer: Timer
 @export var audio_player: AudioStreamPlayer
 
-@export_category("Settings")
-@export var default_start_time_in_seconds: int = 60 * 25
-
 
 func _ready(): 
-	timer_interface.default_time_to_display_in_seconds = default_start_time_in_seconds
 	timer_interface.new_timer_start_requested.connect(_start_timer)
 	timer_interface.timer_pause_requested.connect(_pause_timer)
 	timer_interface.timer_resume_requested.connect(_resume_timer)
 	timer_interface.timer_reset_requested.connect(_reset_timer)
-	timer_interface.update_setup_fields(default_start_time_in_seconds)
+	timer_interface.reset_setup_fields()
 
 
 func _process(_delta):

@@ -1,9 +1,16 @@
-[gd_resource type="Theme" format=3 uid="uid://bvecnc26kw5cj"]
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://bvecnc26kw5cj"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bj3gi"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_e0yci"]
 
 [resource]
+ActiveMode/styles/normal = SubResource("StyleBoxEmpty_bj3gi")
 BoxContainer/constants/separation = 20
 Button/font_sizes/font_size = 40
 HeaderLarge/font_sizes/font_size = 50
+InactiveMode/colors/font_color = Color(1, 1, 1, 0.490196)
+InactiveMode/styles/normal = SubResource("StyleBoxEmpty_e0yci")
 Label/font_sizes/font_size = 36
 LineEdit/constants/minimum_character_width = 2
 LineEdit/font_sizes/font_size = 120

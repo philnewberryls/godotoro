@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://2vnv4xunc3cg"]
+[gd_scene load_steps=5 format=3 uid="uid://2vnv4xunc3cg"]
 
 [ext_resource type="Theme" uid="uid://bvecnc26kw5cj" path="res://timer_interface/timer_interface_theme.tres" id="1_kawb5"]
 [ext_resource type="Script" path="res://timer_interface/timer_interface.gd" id="2_2vjti"]
+[ext_resource type="Script" path="res://timer_interface/ModeButton.gd" id="3_2xlqj"]
 [ext_resource type="Script" path="res://timer_interface/PauseResumeButton.gd" id="3_autak"]
 
 [node name="TimerInterface" type="CenterContainer" node_paths=PackedStringArray("timer_stopped_buttons", "timer_in_progress_buttons", "timer_setup_fields", "timer_setup_minutes", "timer_setup_seconds", "timer_display")]
@@ -28,8 +29,39 @@ theme_type_variation = &"HeaderLarge"
 text = "Godotoro ⌛"
 horizontal_alignment = 1
 
+[node name="ModeButtons" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="VBoxContainer/ModeButtons"]
+layout_mode = 2
+text = "It's time for"
+
+[node name="WorkModeButton" type="Button" parent="VBoxContainer/ModeButtons" groups=["mode_buttons"]]
+layout_mode = 2
+focus_mode = 0
+theme_type_variation = &"ActiveMode"
+text = "work"
+script = ExtResource("3_2xlqj")
+is_active_mode = true
+
+[node name="ShortBreakModeButton" type="Button" parent="VBoxContainer/ModeButtons" groups=["mode_buttons"]]
+layout_mode = 2
+focus_mode = 0
+theme_type_variation = &"InactiveMode"
+text = "a break"
+script = ExtResource("3_2xlqj")
+
+[node name="LongBreakModeButton" type="Button" parent="VBoxContainer/ModeButtons" groups=["mode_buttons"]]
+layout_mode = 2
+focus_mode = 0
+theme_type_variation = &"InactiveMode"
+text = "a long break"
+script = ExtResource("3_2xlqj")
+
 [node name="TimerSetupFields" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
+alignment = 1
 
 [node name="Minutes" type="SpinBox" parent="VBoxContainer/TimerSetupFields"]
 layout_mode = 2
@@ -78,6 +110,9 @@ script = ExtResource("3_autak")
 layout_mode = 2
 text = "Reset"
 
+[connection signal="button_up" from="VBoxContainer/ModeButtons/WorkModeButton" to="." method="_on_work_mode_button_button_up"]
+[connection signal="button_up" from="VBoxContainer/ModeButtons/ShortBreakModeButton" to="." method="_on_break_mode_button_button_up"]
+[connection signal="button_up" from="VBoxContainer/ModeButtons/LongBreakModeButton" to="." method="_on_long_break_mode_button_button_up"]
 [connection signal="button_up" from="VBoxContainer/ReadyButtons/StartButton" to="." method="_on_start_button_button_up"]
 [connection signal="timer_pause_requested" from="VBoxContainer/InProgressButtons/PauseResumeButton" to="." method="_on_pause_resume_button_timer_pause_requested"]
 [connection signal="timer_resume_requested" from="VBoxContainer/InProgressButtons/PauseResumeButton" to="." method="_on_pause_resume_button_timer_resume_requested"]
