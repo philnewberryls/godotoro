@@ -10,7 +10,7 @@ extends Node
 
 func _ready(): 
 	timer_interface.default_time_to_display_in_seconds = default_start_time_in_seconds
-	timer_interface.start_button_pressed.connect(_start_timer)
+	timer_interface.new_timer_start_requested.connect(_start_timer)
 	timer_interface.timer_pause_requested.connect(_pause_timer)
 	timer_interface.timer_resume_requested.connect(_resume_timer)
 	timer_interface.timer_reset_requested.connect(_reset_timer)
@@ -25,8 +25,9 @@ func _on_active_timer_timeout():
 	timer_interface.announce_timer_finished()
 
 
-func _start_timer():
-	active_timer.start(default_start_time_in_seconds)
+func _start_timer(mins: int, secs: int):
+	var time_to_run_in_seconds: int = (mins * 60) + secs
+	active_timer.start(time_to_run_in_seconds)
 
 
 func _pause_timer():
