@@ -16,6 +16,7 @@ func _ready():
 	timer_interface.timer_reset_requested.connect(_reset_timer)
 	timer_interface.update_setup_fields(default_start_time_in_seconds)
 
+
 func _process(_delta):
 	if not active_timer.is_stopped():
 		timer_interface.update_timer_display(active_timer.time_left)
@@ -37,6 +38,7 @@ func _pause_timer():
 
 func _resume_timer():
 	active_timer.paused = false
+
 
 func _reset_timer():
 	active_timer.stop()

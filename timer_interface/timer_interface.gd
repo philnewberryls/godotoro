@@ -1,6 +1,7 @@
 extends CenterContainer
 class_name TimerInterface
 
+
 enum button_display_states{
 	TIMER_READY,
 	TIMER_IN_PROGRESS
@@ -19,6 +20,7 @@ signal timer_reset_requested()
 @export var timer_display: Label
 
 var default_time_to_display_in_seconds: int = 60 * 25
+
 
 func _on_start_button_button_up():
 	new_timer_start_requested.emit(timer_setup_minutes.value, timer_setup_seconds.value)
@@ -62,6 +64,7 @@ func _convert_float_to_clock_display(time_to_convert: float) -> String:
 	var seconds_string: String = str("%0*d" % [2, seconds_left]) # Adds extra 0 if less than 10
 	var result: String = str(minutes_string + ":" + seconds_string)
 	return result
+
 
 func _switch_displayed_buttons(state_to_switch_to: button_display_states):
 	match state_to_switch_to:
