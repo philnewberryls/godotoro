@@ -96,11 +96,14 @@ func _switch_displayed_buttons(state_to_switch_to: button_display_states):
 			timer_display.hide()
 			timer_stopped_buttons.show()
 			timer_setup_fields.show()
+			get_tree().call_group("mode_buttons", "show")
 		button_display_states.TIMER_IN_PROGRESS:
 			timer_stopped_buttons.hide()
 			timer_setup_fields.hide()
 			timer_in_progress_buttons.show()
 			timer_display.show()
+			get_tree().call_group("mode_buttons", "hide_if_inactive")
+			
 		_:
 			printerr("Invalid state switch request given!")
 

@@ -24,3 +24,7 @@ func _react_to_press():
 
 func return_to_default_state():
 	is_active_mode = false
+
+
+func hide_if_inactive(): 
+	if not is_active_mode: self.hide()
