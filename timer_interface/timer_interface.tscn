@@ -1,18 +1,50 @@
-[gd_scene load_steps=5 format=3 uid="uid://2vnv4xunc3cg"]
+[gd_scene load_steps=8 format=3 uid="uid://2vnv4xunc3cg"]
 
 [ext_resource type="Theme" uid="uid://bvecnc26kw5cj" path="res://timer_interface/timer_interface_theme.tres" id="1_kawb5"]
 [ext_resource type="Script" path="res://timer_interface/timer_interface.gd" id="2_2vjti"]
+[ext_resource type="Script" path="res://timer_interface/gui.gd" id="2_kbg0o"]
 [ext_resource type="Script" path="res://timer_interface/ModeButton.gd" id="3_2xlqj"]
 [ext_resource type="Script" path="res://timer_interface/PauseResumeButton.gd" id="3_autak"]
+[ext_resource type="AudioStream" uid="uid://cllsbeklaabnb" path="res://timer_interface/audio/131348__kaonaya__bell-at-daitokuji-templekyoto.wav" id="5_gc1de"]
 
-[node name="TimerInterface" type="CenterContainer" node_paths=PackedStringArray("timer_stopped_buttons", "timer_in_progress_buttons", "timer_setup_fields", "timer_setup_minutes", "timer_setup_seconds", "timer_display")]
+[sub_resource type="GDScript" id="GDScript_78x87"]
+script/source = "extends AudioStreamPlayer
+
+
+"
+
+[node name="TimerInterface" type="Control" node_paths=PackedStringArray("gui", "active_timer", "audio_player")]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("1_kawb5")
 script = ExtResource("2_2vjti")
+gui = NodePath("GUI")
+active_timer = NodePath("ActiveTimer")
+audio_player = NodePath("AudioPlayer")
+
+[node name="ActiveTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="AudioPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_gc1de")
+script = SubResource("GDScript_78x87")
+
+[node name="GUI" type="CenterContainer" parent="." node_paths=PackedStringArray("timer_stopped_buttons", "timer_in_progress_buttons", "timer_setup_fields", "timer_setup_minutes", "timer_setup_seconds", "timer_display")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -348.5
+offset_top = -202.5
+offset_right = 348.5
+offset_bottom = 202.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_kawb5")
+script = ExtResource("2_kbg0o")
 timer_stopped_buttons = NodePath("VBoxContainer/ReadyButtons")
 timer_in_progress_buttons = NodePath("VBoxContainer/InProgressButtons")
 timer_setup_fields = NodePath("VBoxContainer/TimerSetupFields")
@@ -20,24 +52,24 @@ timer_setup_minutes = NodePath("VBoxContainer/TimerSetupFields/Minutes")
 timer_setup_seconds = NodePath("VBoxContainer/TimerSetupFields/Seconds")
 timer_display = NodePath("VBoxContainer/InProgressTimeDisplay")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="GUI"]
 layout_mode = 2
 
-[node name="Header" type="Label" parent="VBoxContainer"]
+[node name="Header" type="Label" parent="GUI/VBoxContainer"]
 layout_mode = 2
 theme_type_variation = &"HeaderLarge"
 text = "Godotoro ⌛"
 horizontal_alignment = 1
 
-[node name="ModeButtons" type="HBoxContainer" parent="VBoxContainer"]
+[node name="ModeButtons" type="HBoxContainer" parent="GUI/VBoxContainer"]
 layout_mode = 2
 alignment = 1
 
-[node name="Label" type="Label" parent="VBoxContainer/ModeButtons"]
+[node name="Label" type="Label" parent="GUI/VBoxContainer/ModeButtons"]
 layout_mode = 2
 text = "It's time for"
 
-[node name="WorkModeButton" type="Button" parent="VBoxContainer/ModeButtons" groups=["mode_buttons"]]
+[node name="WorkModeButton" type="Button" parent="GUI/VBoxContainer/ModeButtons" groups=["mode_buttons"]]
 layout_mode = 2
 focus_mode = 0
 theme_type_variation = &"ActiveMode"
@@ -45,73 +77,73 @@ text = "work"
 script = ExtResource("3_2xlqj")
 is_active_mode = true
 
-[node name="ShortBreakModeButton" type="Button" parent="VBoxContainer/ModeButtons" groups=["mode_buttons"]]
+[node name="ShortBreakModeButton" type="Button" parent="GUI/VBoxContainer/ModeButtons" groups=["mode_buttons"]]
 layout_mode = 2
 focus_mode = 0
 theme_type_variation = &"InactiveMode"
 text = "a break"
 script = ExtResource("3_2xlqj")
 
-[node name="LongBreakModeButton" type="Button" parent="VBoxContainer/ModeButtons" groups=["mode_buttons"]]
+[node name="LongBreakModeButton" type="Button" parent="GUI/VBoxContainer/ModeButtons" groups=["mode_buttons"]]
 layout_mode = 2
 focus_mode = 0
 theme_type_variation = &"InactiveMode"
 text = "a long break"
 script = ExtResource("3_2xlqj")
 
-[node name="TimerSetupFields" type="HBoxContainer" parent="VBoxContainer"]
+[node name="TimerSetupFields" type="HBoxContainer" parent="GUI/VBoxContainer"]
 layout_mode = 2
 alignment = 1
 
-[node name="Minutes" type="SpinBox" parent="VBoxContainer/TimerSetupFields"]
+[node name="Minutes" type="SpinBox" parent="GUI/VBoxContainer/TimerSetupFields"]
 layout_mode = 2
 max_value = 60.0
 alignment = 1
 select_all_on_focus = true
 
-[node name="Seperator" type="Label" parent="VBoxContainer/TimerSetupFields"]
+[node name="Seperator" type="Label" parent="GUI/VBoxContainer/TimerSetupFields"]
 layout_mode = 2
 theme_type_variation = &"TimeDisplay"
 text = ":"
 
-[node name="Seconds" type="SpinBox" parent="VBoxContainer/TimerSetupFields"]
+[node name="Seconds" type="SpinBox" parent="GUI/VBoxContainer/TimerSetupFields"]
 layout_mode = 2
 max_value = 60.0
 alignment = 1
 select_all_on_focus = true
 
-[node name="InProgressTimeDisplay" type="Label" parent="VBoxContainer"]
+[node name="InProgressTimeDisplay" type="Label" parent="GUI/VBoxContainer"]
 visible = false
 layout_mode = 2
 theme_type_variation = &"TimeDisplay"
 text = "25:00"
 horizontal_alignment = 1
 
-[node name="ReadyButtons" type="HBoxContainer" parent="VBoxContainer"]
+[node name="ReadyButtons" type="HBoxContainer" parent="GUI/VBoxContainer"]
 layout_mode = 2
 alignment = 1
 
-[node name="StartButton" type="Button" parent="VBoxContainer/ReadyButtons"]
+[node name="StartButton" type="Button" parent="GUI/VBoxContainer/ReadyButtons"]
 layout_mode = 2
 text = "Start"
 
-[node name="InProgressButtons" type="HBoxContainer" parent="VBoxContainer"]
+[node name="InProgressButtons" type="HBoxContainer" parent="GUI/VBoxContainer"]
 visible = false
 layout_mode = 2
 alignment = 1
 
-[node name="PauseResumeButton" type="Button" parent="VBoxContainer/InProgressButtons"]
+[node name="PauseResumeButton" type="Button" parent="GUI/VBoxContainer/InProgressButtons"]
 layout_mode = 2
 toggle_mode = true
 text = "Pause"
 script = ExtResource("3_autak")
 
-[node name="ResetTimerButton" type="Button" parent="VBoxContainer/InProgressButtons"]
+[node name="ResetTimerButton" type="Button" parent="GUI/VBoxContainer/InProgressButtons"]
 layout_mode = 2
 text = "Reset"
 
-[connection signal="button_up" from="VBoxContainer/ReadyButtons/StartButton" to="." method="_on_start_button_button_up"]
-[connection signal="timer_pause_requested" from="VBoxContainer/InProgressButtons/PauseResumeButton" to="." method="_on_pause_resume_button_timer_pause_requested"]
-[connection signal="timer_resume_requested" from="VBoxContainer/InProgressButtons/PauseResumeButton" to="." method="_on_pause_resume_button_timer_resume_requested"]
-[connection signal="toggled" from="VBoxContainer/InProgressButtons/PauseResumeButton" to="VBoxContainer/InProgressButtons/PauseResumeButton" method="_on_toggled"]
-[connection signal="button_up" from="VBoxContainer/InProgressButtons/ResetTimerButton" to="." method="_on_reset_timer_button_button_up"]
+[connection signal="button_up" from="GUI/VBoxContainer/ReadyButtons/StartButton" to="GUI" method="_on_start_button_button_up"]
+[connection signal="timer_pause_requested" from="GUI/VBoxContainer/InProgressButtons/PauseResumeButton" to="GUI" method="_on_pause_resume_button_timer_pause_requested"]
+[connection signal="timer_resume_requested" from="GUI/VBoxContainer/InProgressButtons/PauseResumeButton" to="GUI" method="_on_pause_resume_button_timer_resume_requested"]
+[connection signal="toggled" from="GUI/VBoxContainer/InProgressButtons/PauseResumeButton" to="GUI/VBoxContainer/InProgressButtons/PauseResumeButton" method="_on_toggled"]
+[connection signal="button_up" from="GUI/VBoxContainer/InProgressButtons/ResetTimerButton" to="GUI" method="_on_reset_timer_button_button_up"]
