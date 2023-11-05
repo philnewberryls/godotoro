@@ -71,7 +71,7 @@ func _on_mode_button_mode_change_requested(mode_name: String):
 
 func _convert_float_to_clock_display(time_to_convert: float) -> String:
 	var seconds_total: int = floor(time_to_convert)
-	var minutes_left: int = floor(seconds_total / 60)
+	var minutes_left: int = int(floor(seconds_total / 60))
 	var seconds_left: int = int(seconds_total) - (minutes_left * 60)
 	var minutes_string: String = str(minutes_left)
 	var seconds_string: String = str("%0*d" % [2, seconds_left]) # Adds extra 0 if less than 10
@@ -112,6 +112,7 @@ func update_timer_display(time_left: float):
 
 func announce_timer_finished():
 	pass
+
 
 func reset_setup_fields():
 	match current_mode:
