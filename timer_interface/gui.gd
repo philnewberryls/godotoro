@@ -20,6 +20,9 @@ signal timer_reset_requested()
 @export var timer_setup_minutes: SpinBox
 @export var timer_setup_seconds: SpinBox
 @export var timer_display: Label
+@export var mode_button_work: ModeButton
+@export var mode_button_short_break: ModeButton
+@export var mode_button_long_break: ModeButton
 
 var default_work_time_seconds: int = 60 * 25
 var default_short_break_time_seconds: int = 60 * 5
@@ -51,15 +54,19 @@ func _on_reset_timer_button_button_up():
 
 
 func _on_mode_button_mode_change_requested(mode_name: String):
+	get_tree().call_group("mode_buttons", "deactivate_if_still_active")
+	var intended_mode_switch: TimerInterface.mode_states
 	if mode_name.to_lower().contains("work"):
-		timer_interface.current_mode = timer_interface.mode_states.WORK
+		intended_mode_switch = timer_interface.mode_states.WORK
 	elif mode_name.to_lower().contains("short"):
-		timer_interface.current_mode = timer_interface.mode_states.SHORT_BREAK
+		intended_mode_switch = timer_interface.mode_states.SHORT_BREAK
 	elif mode_name.to_lower().contains("long"):
-		timer_interface.current_mode = timer_interface.mode_states.LONG_BREAK
+		intended_mode_switch = timer_interface.mode_states.LONG_BREAK
 	else:
 		printerr("Invalid mode name given!")
-	reset_setup_fields()
+	if intended_mode_switch == timer_interface.current_mode:
+		return
+		show_time_input_ready_display()
 
 
 func _convert_float_to_clock_display(time_to_convert: float) -> String:
@@ -86,10 +93,26 @@ func _switch_displayed_buttons(state_to_switch_to: button_display_states):
 			timer_in_progress_buttons.show()
 			timer_display.show()
 			get_tree().call_group("mode_buttons", "hide_if_inactive")
-			
 		_:
 			printerr("Invalid state switch request given!")
 
+
+func show_time_input_ready_display():
+	_switch_displayed_buttons(button_display_states.TIMER_READY)
+	_switch_to_appropriate_mode_button()
+	reset_setup_fields()
+
+
+func _switch_to_appropriate_mode_button():
+	get_tree().call_group("mode_buttons", "deactivate")
+	match timer_interface.current_mode:
+		timer_interface.mode_states.WORK: 
+			mode_button_work.is_active_mode = true
+		timer_interface.mode_states.SHORT_BREAK: 
+			mode_button_short_break.is_active_mode = true
+		timer_interface.mode_states.LONG_BREAK: 
+			mode_button_long_break.is_active_mode = true
+	get_tree().call_group("mode_buttons", "update_appearences")
 
 
 func update_setup_fields(time_total_in_seconds: float):

@@ -3,9 +3,9 @@
 [ext_resource type="Theme" uid="uid://bvecnc26kw5cj" path="res://timer_interface/timer_interface_theme.tres" id="1_kawb5"]
 [ext_resource type="Script" path="res://timer_interface/timer_interface.gd" id="2_2vjti"]
 [ext_resource type="Script" path="res://timer_interface/gui.gd" id="2_kbg0o"]
-[ext_resource type="Script" path="res://timer_interface/ModeButton.gd" id="3_2xlqj"]
-[ext_resource type="Script" path="res://timer_interface/PauseResumeButton.gd" id="3_autak"]
 [ext_resource type="AudioStream" uid="uid://cllsbeklaabnb" path="res://timer_interface/audio/131348__kaonaya__bell-at-daitokuji-templekyoto.wav" id="5_gc1de"]
+[ext_resource type="Script" path="res://timer_interface/mode_button.gd" id="5_v8lcs"]
+[ext_resource type="Script" path="res://timer_interface/pause_resume_button.gd" id="6_ra2xw"]
 
 [sub_resource type="GDScript" id="GDScript_78x87"]
 script/source = "extends AudioStreamPlayer
@@ -32,7 +32,7 @@ one_shot = true
 stream = ExtResource("5_gc1de")
 script = SubResource("GDScript_78x87")
 
-[node name="GUI" type="CenterContainer" parent="." node_paths=PackedStringArray("timer_interface", "timer_stopped_buttons", "timer_in_progress_buttons", "timer_setup_fields", "timer_setup_minutes", "timer_setup_seconds", "timer_display")]
+[node name="GUI" type="CenterContainer" parent="." node_paths=PackedStringArray("timer_interface", "timer_stopped_buttons", "timer_in_progress_buttons", "timer_setup_fields", "timer_setup_minutes", "timer_setup_seconds", "timer_display", "mode_button_work", "mode_button_short_break", "mode_button_long_break")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -52,6 +52,9 @@ timer_setup_fields = NodePath("VBoxContainer/TimerSetupFields")
 timer_setup_minutes = NodePath("VBoxContainer/TimerSetupFields/Minutes")
 timer_setup_seconds = NodePath("VBoxContainer/TimerSetupFields/Seconds")
 timer_display = NodePath("VBoxContainer/InProgressTimeDisplay")
+mode_button_work = NodePath("VBoxContainer/ModeButtons/WorkModeButton")
+mode_button_short_break = NodePath("VBoxContainer/ModeButtons/ShortBreakModeButton")
+mode_button_long_break = NodePath("VBoxContainer/ModeButtons/LongBreakModeButton")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="GUI"]
 layout_mode = 2
@@ -75,7 +78,7 @@ layout_mode = 2
 focus_mode = 0
 theme_type_variation = &"ActiveMode"
 text = "work"
-script = ExtResource("3_2xlqj")
+script = ExtResource("5_v8lcs")
 is_active_mode = true
 
 [node name="ShortBreakModeButton" type="Button" parent="GUI/VBoxContainer/ModeButtons" groups=["mode_buttons"]]
@@ -83,14 +86,16 @@ layout_mode = 2
 focus_mode = 0
 theme_type_variation = &"InactiveMode"
 text = "a break"
-script = ExtResource("3_2xlqj")
+script = ExtResource("5_v8lcs")
+_my_represented_mode = 1
 
 [node name="LongBreakModeButton" type="Button" parent="GUI/VBoxContainer/ModeButtons" groups=["mode_buttons"]]
 layout_mode = 2
 focus_mode = 0
 theme_type_variation = &"InactiveMode"
 text = "a long break"
-script = ExtResource("3_2xlqj")
+script = ExtResource("5_v8lcs")
+_my_represented_mode = 2
 
 [node name="TimerSetupFields" type="HBoxContainer" parent="GUI/VBoxContainer"]
 layout_mode = 2
@@ -137,11 +142,15 @@ alignment = 1
 layout_mode = 2
 toggle_mode = true
 text = "Pause"
-script = ExtResource("3_autak")
+script = ExtResource("6_ra2xw")
 
 [node name="ResetTimerButton" type="Button" parent="GUI/VBoxContainer/InProgressButtons"]
 layout_mode = 2
 text = "Reset"
+
+[node name="SkipButton" type="Button" parent="GUI/VBoxContainer/InProgressButtons"]
+layout_mode = 2
+text = "Skip"
 
 [connection signal="timeout" from="ActiveTimer" to="." method="_on_active_timer_timeout"]
 [connection signal="new_timer_start_requested" from="GUI" to="." method="_on_gui_new_timer_start_requested"]
@@ -153,3 +162,4 @@ text = "Reset"
 [connection signal="timer_resume_requested" from="GUI/VBoxContainer/InProgressButtons/PauseResumeButton" to="GUI" method="_on_pause_resume_button_timer_resume_requested"]
 [connection signal="toggled" from="GUI/VBoxContainer/InProgressButtons/PauseResumeButton" to="GUI/VBoxContainer/InProgressButtons/PauseResumeButton" method="_on_toggled"]
 [connection signal="button_up" from="GUI/VBoxContainer/InProgressButtons/ResetTimerButton" to="GUI" method="_on_reset_timer_button_button_up"]
+[connection signal="button_up" from="GUI/VBoxContainer/InProgressButtons/SkipButton" to="." method="_on_skip_button_button_up"]
