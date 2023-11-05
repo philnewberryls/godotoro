@@ -53,15 +53,6 @@ func _on_reset_timer_button_button_up():
 	_switch_displayed_buttons(button_display_states.TIMER_READY)
 	reset_setup_fields()
 
-func reset_setup_fields():
-	match current_mode:
-		mode_states.WORK:
-			update_setup_fields(default_work_time_seconds)
-		mode_states.SHORT_BREAK:
-			update_setup_fields(default_short_break_time_seconds)
-		mode_states.LONG_BREAK:
-			update_setup_fields(default_long_break_seconds)
-
 
 func _on_work_mode_button_button_up():
 	pass
@@ -88,21 +79,6 @@ func _on_mode_button_mode_change_requested(mode_name: String):
 	reset_setup_fields()
 
 
-func update_setup_fields(time_total_in_seconds: float):
-	var time_total: int = floor(time_total_in_seconds)
-	timer_setup_minutes.value = time_total / 60
-	timer_setup_seconds.value = time_total - (timer_setup_minutes.value * 60)
-
-
-func update_timer_display(time_left: float):
-	var time_to_display = _convert_float_to_clock_display(time_left)
-	timer_display.text = time_to_display
-
-
-func announce_timer_finished():
-	pass
-
-
 func _convert_float_to_clock_display(time_to_convert: float) -> String:
 	var seconds_total: int = floor(time_to_convert)
 	var minutes_left: int = floor(seconds_total / 60)
@@ -127,3 +103,28 @@ func _switch_displayed_buttons(state_to_switch_to: button_display_states):
 			timer_display.show()
 		_:
 			printerr("Invalid state switch request given!")
+
+
+
+func update_setup_fields(time_total_in_seconds: float):
+	var time_total: int = floor(time_total_in_seconds)
+	timer_setup_minutes.value = time_total / 60
+	timer_setup_seconds.value = time_total - (timer_setup_minutes.value * 60)
+
+
+func update_timer_display(time_left: float):
+	var time_to_display = _convert_float_to_clock_display(time_left)
+	timer_display.text = time_to_display
+
+
+func announce_timer_finished():
+	pass
+
+func reset_setup_fields():
+	match current_mode:
+		mode_states.WORK:
+			update_setup_fields(default_work_time_seconds)
+		mode_states.SHORT_BREAK:
+			update_setup_fields(default_short_break_time_seconds)
+		mode_states.LONG_BREAK:
+			update_setup_fields(default_long_break_seconds)
