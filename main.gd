@@ -20,7 +20,7 @@ func _process(_delta):
 
 func _on_active_timer_timeout():
 	audio_player.play(0.0)
-	timer_interface.alert_timer_finished()
+	timer_interface.announce_timer_finished()
 
 
 func _start_timer():
