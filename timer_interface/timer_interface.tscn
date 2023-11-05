@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://2vnv4xunc3cg"]
+[gd_scene load_steps=4 format=3 uid="uid://2vnv4xunc3cg"]
 
 [ext_resource type="Theme" uid="uid://bvecnc26kw5cj" path="res://timer_interface/timer_interface_theme.tres" id="1_kawb5"]
 [ext_resource type="Script" path="res://timer_interface/timer_interface.gd" id="2_2vjti"]
+[ext_resource type="Script" path="res://timer_interface/PauseResumeButton.gd" id="3_autak"]
 
 [node name="TimerInterface" type="CenterContainer" node_paths=PackedStringArray("timer_display")]
 anchors_preset = 15
@@ -20,8 +21,23 @@ layout_mode = 2
 layout_mode = 2
 text = "25:00"
 
-[node name="StartButton" type="Button" parent="VBoxContainer"]
+[node name="StoppedButtons" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="StartButton" type="Button" parent="VBoxContainer/StoppedButtons"]
 layout_mode = 2
 text = "Start"
 
-[connection signal="button_up" from="VBoxContainer/StartButton" to="." method="_on_start_button_button_up"]
+[node name="InProgressButtons" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="PauseResumeButton" type="Button" parent="VBoxContainer/InProgressButtons"]
+layout_mode = 2
+toggle_mode = true
+text = "Pause"
+script = ExtResource("3_autak")
+
+[connection signal="button_up" from="VBoxContainer/StoppedButtons/StartButton" to="." method="_on_start_button_button_up"]
+[connection signal="timer_pause_requested" from="VBoxContainer/InProgressButtons/PauseResumeButton" to="." method="_on_pause_resume_button_timer_pause_requested"]
+[connection signal="timer_resume_requested" from="VBoxContainer/InProgressButtons/PauseResumeButton" to="." method="_on_pause_resume_button_timer_resume_requested"]
+[connection signal="toggled" from="VBoxContainer/InProgressButtons/PauseResumeButton" to="VBoxContainer/InProgressButtons/PauseResumeButton" method="_on_toggled"]
