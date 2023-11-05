@@ -144,6 +144,10 @@ layout_mode = 2
 text = "Reset"
 
 [connection signal="timeout" from="ActiveTimer" to="." method="_on_active_timer_timeout"]
+[connection signal="new_timer_start_requested" from="GUI" to="." method="_on_gui_new_timer_start_requested"]
+[connection signal="timer_pause_requested" from="GUI" to="." method="_on_gui_timer_pause_requested"]
+[connection signal="timer_reset_requested" from="GUI" to="." method="_on_gui_timer_reset_requested"]
+[connection signal="timer_resume_requested" from="GUI" to="." method="_on_gui_timer_resume_requested"]
 [connection signal="button_up" from="GUI/VBoxContainer/ReadyButtons/StartButton" to="GUI" method="_on_start_button_button_up"]
 [connection signal="timer_pause_requested" from="GUI/VBoxContainer/InProgressButtons/PauseResumeButton" to="GUI" method="_on_pause_resume_button_timer_pause_requested"]
 [connection signal="timer_resume_requested" from="GUI/VBoxContainer/InProgressButtons/PauseResumeButton" to="GUI" method="_on_pause_resume_button_timer_resume_requested"]

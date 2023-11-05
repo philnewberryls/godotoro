@@ -12,7 +12,6 @@ signal new_timer_start_requested()
 signal timer_pause_requested()
 signal timer_resume_requested()
 signal timer_reset_requested()
-signal mode_change_requested()
 
 @export var timer_interface: TimerInterface
 @export var timer_stopped_buttons: HBoxContainer
@@ -52,7 +51,6 @@ func _on_reset_timer_button_button_up():
 
 
 func _on_mode_button_mode_change_requested(mode_name: String):
-	mode_change_requested.emit(mode_name)
 	if mode_name.to_lower().contains("work"):
 		timer_interface.current_mode = timer_interface.mode_states.WORK
 	elif mode_name.to_lower().contains("short"):

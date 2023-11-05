@@ -1,6 +1,7 @@
 extends Node
 class_name TimerInterface
 
+
 enum mode_states{
 	WORK,
 	SHORT_BREAK,
@@ -13,11 +14,8 @@ enum mode_states{
 
 var current_mode: mode_states = mode_states.WORK
 
+
 func _ready(): 
-	gui.new_timer_start_requested.connect(_start_timer)
-	gui.timer_pause_requested.connect(_pause_timer)
-	gui.timer_resume_requested.connect(_resume_timer)
-	gui.timer_reset_requested.connect(_reset_timer)
 	gui.reset_setup_fields()
 
 
@@ -31,18 +29,18 @@ func _on_active_timer_timeout():
 	gui.announce_timer_finished()
 
 
-func _start_timer(mins: int, secs: int):
-	var time_to_run_in_seconds: int = (mins * 60) + secs
+func _on_gui_new_timer_start_requested(minutes: int, seconds: int):
+	var time_to_run_in_seconds: int = (minutes * 60) + seconds
 	active_timer.start(time_to_run_in_seconds)
 
 
-func _pause_timer():
+func _on_gui_timer_pause_requested():
 	active_timer.paused = true
 
 
-func _resume_timer():
-	active_timer.paused = false
-
-
-func _reset_timer():
+func _on_gui_timer_reset_requested():
 	active_timer.stop()
+
+
+func _on_gui_timer_resume_requested():
+	active_timer.paused = false
