@@ -37,16 +37,22 @@ func _on_reset_timer_button_button_up():
 
 
 func update_timer_display(time_left: float):
-	var time_as_int: int = int(time_left)
-	var minutes_left: int = floor(time_as_int / 60)
-	var seconds_left: int = time_as_int - (minutes_left * 60)
-	var time_to_display: String = str(minutes_left) + ":" + str(seconds_left)
+	var time_to_display = _convert_float_to_clock_display(time_left)
 	timer_display.text = time_to_display
 
 
 func announce_timer_finished():
 	pass
 
+
+func _convert_float_to_clock_display(time_to_convert: float) -> String:
+	var seconds_total: int = floor(time_to_convert)
+	var minutes_left: int = floor(seconds_total / 60)
+	var seconds_left: int = int(seconds_total) - (minutes_left * 60)
+	var minutes_string: String = str(minutes_left)
+	var seconds_string: String = str("%0*d" % [2, seconds_left]) # Adds extra 0 if less than 10
+	var result: String = str(minutes_string + ":" + seconds_string)
+	return result
 
 func _switch_displayed_buttons(state_to_switch_to: button_display_states):
 	match state_to_switch_to:
