@@ -31,9 +31,11 @@ var default_short_break_time_seconds: int = 60 * 5
 var default_long_break_seconds: int = 60 * 15
 var current_mode: mode_states = mode_states.WORK
 
+
 func _ready():
 	for mode_button in get_tree().get_nodes_in_group("mode_buttons"):
 		mode_button.mode_change_requested.connect(_on_mode_button_mode_change_requested)
+
 
 func _on_start_button_button_up():
 	new_timer_start_requested.emit(timer_setup_minutes.value, timer_setup_seconds.value)
@@ -52,18 +54,6 @@ func _on_reset_timer_button_button_up():
 	timer_reset_requested.emit()
 	_switch_displayed_buttons(button_display_states.TIMER_READY)
 	reset_setup_fields()
-
-
-func _on_work_mode_button_button_up():
-	pass
-
-
-func _on_break_mode_button_button_up():
-	pass # Replace with function body.
-
-
-func _on_long_break_mode_button_button_up():
-	pass # Replace with function body.
 
 
 func _on_mode_button_mode_change_requested(mode_name: String):
