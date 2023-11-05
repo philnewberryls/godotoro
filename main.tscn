@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://bnev4unm2korg"]
+
+[ext_resource type="PackedScene" uid="uid://2vnv4xunc3cg" path="res://timer_interface/timer_interface.tscn" id="1_7e28v"]
+[ext_resource type="Script" path="res://main.gd" id="1_cjkyw"]
+
+[node name="main" type="Node" node_paths=PackedStringArray("timer_interface", "active_timer")]
+script = ExtResource("1_cjkyw")
+timer_interface = NodePath("TimerInterface")
+active_timer = NodePath("ActiveTimer")
+
+[node name="TimerInterface" parent="." instance=ExtResource("1_7e28v")]
+
+[node name="ActiveTimer" type="Timer" parent="."]
