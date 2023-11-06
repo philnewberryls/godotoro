@@ -13,7 +13,8 @@ enum mode_states{
 @export var audio_player: AudioStreamPlayer
 
 var current_mode: mode_states = mode_states.WORK
-
+var pomos_until_long_break_setting: int = 4
+var pomos_until_long_break_current: int = pomos_until_long_break_setting
 
 func _ready(): 
 	gui.reset_setup_fields()
@@ -54,7 +55,12 @@ func _on_skip_button_button_up():
 func _progress_current_mode():
 	match current_mode:
 		mode_states.WORK:
-			current_mode = mode_states.SHORT_BREAK
+			pomos_until_long_break_current -= 1
+			if pomos_until_long_break_current <= 0:
+				pomos_until_long_break_current = pomos_until_long_break_setting
+				current_mode = mode_states.LONG_BREAK
+			else:
+				current_mode = mode_states.SHORT_BREAK
 		mode_states.SHORT_BREAK:
 			current_mode = mode_states.WORK
 		mode_states.LONG_BREAK:
