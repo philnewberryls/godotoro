@@ -31,7 +31,7 @@ var default_long_break_seconds: int = 60 * 15
 
 func _ready():
 	for mode_button in get_tree().get_nodes_in_group("mode_buttons"):
-		mode_button.mode_change_requested.connect(_on_mode_button_mode_change_requested)
+		mode_button.mode_change_requested.connect(_on_mode_change_requested)
 
 
 func _on_start_button_button_up():
@@ -53,7 +53,7 @@ func _on_reset_timer_button_button_up():
 	reset_setup_fields()
 
 
-func _on_mode_button_mode_change_requested(mode_name: String):
+func _on_mode_change_requested(mode_name: String):
 	get_tree().call_group("mode_buttons", "deactivate_if_still_active")
 	var intended_mode_switch: TimerInterface.mode_states
 	if mode_name.to_lower().contains("work"):
@@ -66,6 +66,9 @@ func _on_mode_button_mode_change_requested(mode_name: String):
 		printerr("Invalid mode name given!")
 	if intended_mode_switch == timer_interface.current_mode:
 		return
+	else:
+		timer_interface.current_mode = intended_mode_switch
+		reset_setup_fields()
 		show_time_input_ready_display()
 
 

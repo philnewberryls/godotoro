@@ -15,6 +15,7 @@ func _react_to_press():
 	get_tree().call_group("mode_buttons", "deactivate")
 	is_active_mode = true
 	get_tree().call_group("mode_buttons", "update_appearences")
+	mode_change_requested.emit(self.name)
 
 
 func deactivate():
