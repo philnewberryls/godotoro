@@ -1,9 +1,9 @@
 extends Button
 class_name ModeButton
 
+
 signal mode_change_requested()
 
-@export var _my_represented_mode: int
 @export var is_active_mode: bool = false
 
 
@@ -29,6 +29,3 @@ func update_appearences():
 func hide_if_inactive(): 
 	if not is_active_mode: self.hide()
 
-
-func _on_button_up():
-	pass # Replace with function body.

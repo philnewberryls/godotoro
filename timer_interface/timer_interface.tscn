@@ -87,7 +87,6 @@ focus_mode = 0
 theme_type_variation = &"InactiveMode"
 text = "a break"
 script = ExtResource("5_v8lcs")
-_my_represented_mode = 1
 
 [node name="LongBreakModeButton" type="Button" parent="GUI/VBoxContainer/ModeButtons" groups=["mode_buttons"]]
 layout_mode = 2
@@ -95,7 +94,6 @@ focus_mode = 0
 theme_type_variation = &"InactiveMode"
 text = "a long break"
 script = ExtResource("5_v8lcs")
-_my_represented_mode = 2
 
 [node name="TimerSetupFields" type="HBoxContainer" parent="GUI/VBoxContainer"]
 layout_mode = 2
